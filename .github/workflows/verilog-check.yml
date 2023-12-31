@@ -1,0 +1,15 @@
+name: Verilog Check
+run-name: Checking Verilog code syntax
+on: [push]
+jobs:
+  clean-verilog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: reviewdog/action-setup@v1.1.0
+      - uses: SuibianP/verilog-cleaner@v0.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: peter-evans/create-pull-request@v5.0.2
+        with:
+          delete-branch: true
