@@ -5,6 +5,7 @@ jobs:
   clean-verilog:
     runs-on: ubuntu-latest
     steps:
+      - run: echo $(lsb_release -r | cut -f 2)
       - uses: actions/checkout@v4.1.1
       - uses: reviewdog/action-setup@v1.1.0
       - uses: SuibianP/verilog-cleaner@v0.1.1
