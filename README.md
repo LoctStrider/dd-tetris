@@ -2,6 +2,8 @@
 
 本仓库为 2023-2024 学年浙江大学《数字逻辑设计》大作业设计的代码。
 
+test
+
 ## 开发规范
 
 * Commit 信息使用 [约定式提交](https://www.conventionalcommits.org/zh-hans/v1.0.0/) 格式，但在描述与正文部分使用中文。
