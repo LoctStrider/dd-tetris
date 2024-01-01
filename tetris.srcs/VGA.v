@@ -1,11 +1,31 @@
 module VGA (
     input vga_clk, reset, // 时钟信号；重置信号
     input [11:0] color, // 当前显示颜色
-    output [8:0] row_addr, // 下一个像素点的行地址
-    output [9:0] col_addr, // 下一个像素点的列地址
-    output addr_valid, // 下一个像素点地址是否在有效范围
-    output [3:0] r, g, b, // 颜色输出
-    output hsync, vsync // 同步信号
+    output reg [8:0] row_addr, // 下一个像素点的行地址
+    output reg [9:0] col_addr, // 下一个像素点的列地址
+    output reg addr_valid, // 下一个像素点地址是否在有效范围
+    output reg [3:0] r, g, b, // 颜色输出
+    output reg hsync, vsync // 同步信号
 );
-    // TODO
+    reg [9:0] nowh,nowv;
+    always @ (posedge vga_clk or negedge reset) begin
+        nowh <= (!reset || nowh==10'd799)?10'd0:(nowh+10'd1);
+    end
+    
+    always @ (posedge vga_clk or negedge reset) begin
+       if (!reset) nowv=10'd0;
+       else if (nowh == 10'd799) nowv <= (nowv==10'd524)?10'd0:(nowv+10'd1);
+   end
+   
+   wire  read   = (nowh > 10'd142) && (nowh < 10'd783) &&  (nowv > 10'd34)  &&  (nowv < 10'd515); 
+    always @ (posedge vga_clk) begin
+        row_addr  <=  nowv - 10'd35; // pixel ram row address
+        col_addr  <=  nowh - 10'd143;      // pixel ram col address
+        addr_valid<= ~read;     // read pixel (active low)
+        hsync        <=  (nowh > 10'd95);   // horizontal synchronization
+        vsync        <=  (nowv > 10'd1);   // vertical   synchronization
+        r         <=  addr_valid ? 4'h0 : color[3:0]; // 3-bit red
+        g         <=  addr_valid ? 4'h0 : color[7:4]; // 3-bit green
+        b         <=  addr_valid ? 4'h0 : color[11:8]; // 3-bit blue
+    end
 endmodule
