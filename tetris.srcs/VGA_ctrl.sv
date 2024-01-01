@@ -1,4 +1,4 @@
-typedef  reg signed[2:0] int3_t;
+
 //用于对于给定的map，调用VGA进行整张图的输出。
 module VGA_ctrl(
 
@@ -15,12 +15,14 @@ module VGA_ctrl(
     int3_t [2:0] next_delta_rows,
     int3_t [2:0] next_delta_cols,
     
-    output [11:0] color 
+    output [11:0] color,
+    output reg addr_valid, // 下一个像素点地址是否在有效范围
+    output reg [3:0] r, g, b, // 颜色输出
+    output reg hsync, vsync // 同步信号
     
     );
     
     reg [9:0] nowh,nowv;
-    wire addr_valid;
     VGA VGA1(
         .vga_clk(vga_clk),.reset(reset),
         .color(color),.row_addr(nowv[8:0]),.col_addr(nowh),
@@ -46,10 +48,10 @@ module VGA_ctrl(
         else if(id_row<=10'd21&&(id_col==10'd0||id_col==10'd11))S<=2'd3;//两列的灰色框
         else if(id_row<=10'd5&&id_col==10'd15)S <= 2'd3;//灰色小框
         else if(id_row<=10'd20 && id_col<=10'd10)begin
-            if( (id_row-10'd1==active_center_row) && (id_col-10'd1==active_center_col) ) S <= 2'd2;//正在掉落的块
-            else if( (id_row-10'd1==active_center_row+active_delta_rows[0]) && (id_col-10'd1==active_center_col+active_delta_cols[0]) ) S <= 2'd2;
-            else if( (id_row-10'd1==active_center_row+active_delta_rows[1]) && (id_col-10'd1==active_center_col+active_delta_cols[1]) ) S <= 2'd2;
-            else if( (id_row-10'd1==active_center_row+active_delta_rows[2]) && (id_col-10'd1==active_center_col+active_delta_cols[2]) ) S <= 2'd2;
+            if(active_exist&& (id_row-10'd1==active_center_row) && (id_col-10'd1==active_center_col) ) S <= 2'd2;//正在掉落的块
+            else if(active_exist&& (id_row-10'd1==active_center_row+active_delta_rows[0]) && (id_col-10'd1==active_center_col+active_delta_cols[0]) ) S <= 2'd2;
+            else if(active_exist&& (id_row-10'd1==active_center_row+active_delta_rows[1]) && (id_col-10'd1==active_center_col+active_delta_cols[1]) ) S <= 2'd2;
+            else if(active_exist&& (id_row-10'd1==active_center_row+active_delta_rows[2]) && (id_col-10'd1==active_center_col+active_delta_cols[2]) ) S <= 2'd2;
             else if(map[id_row-10'd1][id_col-10'd1]==0)S <=2'd0;
             else S<=2'd1;
         end
