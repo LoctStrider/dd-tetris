@@ -1,5 +1,5 @@
 typedef  reg signed[2:0] int3_t;
-
+//Г■╗Д╨▌Е╞╧Д╨▌Г╩≥Е╝ Г └mapО╪▄Х╟┐Г■╗VGAХ©⌡Х║▄Ф∙╢Е╪═Е⌡╬Г └Х╬⌠Е┤╨Ц─┌
 module VGA_ctrl(
 
     input vga_clk,
@@ -32,21 +32,21 @@ module VGA_ctrl(
     reg [9:0]id_row;
     reg [9:0]id_col;
     reg[11:0]color_now;
-    assign id_row=(nowv-10'd35)/10'd20;//ппкЫтз╣д╦Явс╠Ю╨её╗╢с0©╙й╪ё╘
-    assign id_col=(nowh-10'd143)/10'd20;//апкЫтз╣д╦Явс╠Ю╨е
+    assign id_row=(nowv-10'd35)/10'd20;//Х║▄Ф┴─Е°╗Г └Ф═╪Е╜░Г╪√Е▐╥О╪┬Д╩▌0Е╪─Е╖▀О╪┴
+    assign id_col=(nowh-10'd143)/10'd20;//Е┬≈Ф┴─Е°╗Г └Ф═╪Е╜░Г╪√Е▐╥
     assign color=color_now;
-    //в╒рБё╛уБ╦Ж╠Ю╨е╨мmap╣доб╠Й╡╩м╛║ёmapж╝жп╢Ф╣дйг╠ъ©Рж╝мБ╣д╦Явс╣дпео╒ё╛╤Ь╪сио╠ъ©Рж╝╨СоРсробф╚рфакр╩н╩ё╛╪╢id_row=x,id_col=y╤тс╕map[x+1][y+1].
-    //м╛юМё╛╤тсзср╠ъсцю╢отй╬обр╩╦Ж©И╣д3*4╣д╦ЯвсуСё╛фДвСио╫г╤тс╕╣дid_row=1,id_col=12.
+    //ФЁ╗Ф└▐О╪▄Х©≥Д╦╙Г╪√Е▐╥Е▓▄mapГ └Д╦▀Ф═┤Д╦█Е░▄Ц─┌mapД╧▀Д╦╜Е╜≤Г └Ф≤╞Х╬╧Ф║├Д╧▀Е╓√Г └Ф═╪Е╜░Г └Д©║Ф│╞О╪▄Х─▄Е┼═Д╦┼Х╬╧Ф║├Д╧▀Е░▌Е░▒Е▐ЁД╦▀Е│▐Г╖╩Д╨├Д╦─Д╫█О╪▄Е█Ёid_row=x,id_col=yЕ╞╧Е╨■map[x+1][y+1].
+    //Е░▄Г░├О╪▄Е╞╧Д╨▌Е▐ЁХ╬╧Г■╗Ф²╔Ф≤╬Г╓╨Д╦▀Д╦─Д╦╙Е²≈Г └3*4Г └Ф═╪Е╜░И≤╣О╪▄Е┘╤Е╥╕Д╦┼Х╖▓Е╞╧Е╨■Г └id_row=1,id_col=12.
     
     always @ (posedge vga_clk) begin
         if(addr_valid)S <= 2'd0;
-        else if(id_row==10'd0&&id_col<=10'd15)S <= 2'd3;//╣зр╩пп╩ри╚©Р
+        else if(id_row==10'd0&&id_col<=10'd15)S <= 2'd3;//Г╛╛Д╦─Х║▄Г│╟Х┴╡Ф║├
         else if(id_row==10'd5&&id_col>=10'd11&&id_col<=10'd15)S <=2'd3;
-        else if(id_row==10'd21&&id_col<=10'd11)S<=2'd3;//вН╨Ср╩пп╩ри╚©Р
-        else if(id_row<=10'd21&&(id_col==10'd0||id_col==10'd11))S<=2'd3;//а╫ап╣д╩ри╚©Р
-        else if(id_row<=10'd5&&id_col==10'd15)S <= 2'd3;//╩ри╚п║©Р
+        else if(id_row==10'd21&&id_col<=10'd11)S<=2'd3;//Ф°─Е░▌Д╦─Х║▄Г│╟Х┴╡Ф║├
+        else if(id_row<=10'd21&&(id_col==10'd0||id_col==10'd11))S<=2'd3;//Д╦╓Е┬≈Г └Г│╟Х┴╡Ф║├
+        else if(id_row<=10'd5&&id_col==10'd15)S <= 2'd3;//Г│╟Х┴╡Е╟▐Ф║├
         else if(id_row<=10'd20 && id_col<=10'd10)begin
-            if( (id_row-10'd1==active_center_row) && (id_col-10'd1==active_center_col) ) S <= 2'd2;//уЩтз╣ТбД╣д©И
+            if( (id_row-10'd1==active_center_row) && (id_col-10'd1==active_center_col) ) S <= 2'd2;//Ф╜ёЕ°╗Ф▌┴Х░╫Г └Е²≈
             else if( (id_row-10'd1==active_center_row+active_delta_rows[0]) && (id_col-10'd1==active_center_col+active_delta_cols[0]) ) S <= 2'd2;
             else if( (id_row-10'd1==active_center_row+active_delta_rows[1]) && (id_col-10'd1==active_center_col+active_delta_cols[1]) ) S <= 2'd2;
             else if( (id_row-10'd1==active_center_row+active_delta_rows[2]) && (id_col-10'd1==active_center_col+active_delta_cols[2]) ) S <= 2'd2;
@@ -54,24 +54,24 @@ module VGA_ctrl(
             else S<=2'd1;
         end
         else begin
-            if( (id_row-10'd1==next_center_row) && (id_col-10'd1==next_center_col) ) S <= 2'd2;//ет╠ъотй╬╣добр╩╦Ж©И
+            if( (id_row-10'd1==next_center_row) && (id_col-10'd1==next_center_col) ) S <= 2'd2;//Ф≈│Х╬╧Ф≤╬Г╓╨Г └Д╦▀Д╦─Д╦╙Е²≈
             else if( (id_row-10'd1==next_center_row+next_delta_rows[0]) && (id_col-10'd1==next_center_col+next_delta_cols[0]) ) S <= 2'd2;
             else if( (id_row-10'd1==next_center_row+next_delta_rows[1]) && (id_col-10'd1==next_center_col+next_delta_cols[1]) ) S <= 2'd2;
             else if( (id_row-10'd1==next_center_row+next_delta_rows[2]) && (id_col-10'd1==next_center_col+next_delta_cols[2]) ) S <= 2'd2;
             else S <= 2'd0;
         end
         
-        if(S==0)color_now <= 12'b0;//╨зи╚
-        else if(S==1)color_now <= 12'b000011111111;//╩фи╚
-        else if(S==2)color_now <= 12'b000000001111;//╨Ли╚
-        else color_now <= 12'b011101110111;//╩ри╚
+        if(S==0)color_now <= 12'b0;//И╩▒Х┴╡
+        else if(S==1)color_now <= 12'b000011111111;//И╩└Х┴╡
+        else if(S==2)color_now <= 12'b000000001111;//Г╨╒Х┴╡
+        else color_now <= 12'b011101110111;//Г│╟Х┴╡
     end
     
 endmodule
 
-//if(id_row==10'd0&&id_col<=10'd17)S <= 2'd1;//╣зр╩пп╩ри╚©Р
+//if(id_row==10'd0&&id_col<=10'd17)S <= 2'd1;//Г╛╛Д╦─Х║▄Г│╟Х┴╡Ф║├
 //        else if(id_row==10'd5&&id_col>=10'd13&&id_col<=10'd17)S <=2'd1;
-//        else if(id_row==10'd23&&id_col<=10'd13)S<=2'd1;//вН╨Ср╩пп╩ри╚©Р
-//        else if(id_row<=10'd23&&(id_col==10'd0||id_col==10'd13))S<=2'd1;//а╫ап╣д╩ри╚©Р
-//        else if(id_row<=10'd5&&id_col==10'd17)S <= 2'd1;//╩ри╚п║©Р
+//        else if(id_row==10'd23&&id_col<=10'd13)S<=2'd1;//Ф°─Е░▌Д╦─Х║▄Г│╟Х┴╡Ф║├
+//        else if(id_row<=10'd23&&(id_col==10'd0||id_col==10'd13))S<=2'd1;//Д╦╓Е┬≈Г └Г│╟Х┴╡Ф║├
+//        else if(id_row<=10'd5&&id_col==10'd17)S <= 2'd1;//Г│╟Х┴╡Е╟▐Ф║├
 //        else S <= 2'd0;
