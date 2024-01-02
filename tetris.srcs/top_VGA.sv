@@ -23,16 +23,16 @@ module top_VGA(
 //    output reg vga_clk
     );
     
-//    reg [31:0]clkdiv;
-//	always@(posedge clk) begin
-//		clkdiv <= clkdiv + 1'b1;
-//	end
+    reg [31:0]clkdiv;
+	always@(posedge clk) begin
+		clkdiv <= clkdiv + 1'b1;
+	end
     
-    wire vga_clk;
-    clkdiv clkdiv1(
-        .board_clk(clk),
-        .div_clk(vga_clk)
-    );
+    wire vga_clk = clkdiv[1];
+    // clkdiv clkdiv1(
+    //     .board_clk(clk),
+    //     .div_clk(vga_clk)
+    // );
     
     
     
