@@ -1,14 +1,21 @@
 module VGA (
     input vga_clk, reset, // 时钟信号；重置信号
     input [11:0] color, // 当前显示颜色
-    output reg [8:0] row_addr, // 下一个像素点的行地址
+    output reg [8:0] row_addr, // 像素点的行地址
     output reg [9:0] col_addr, // 下一个像素点的列地址
     output reg addr_valid, // 下一个像素点地址是否在有效范围
     output reg [3:0] r, g, b, // 颜色输出
-    output reg hsync, vsync // 同步信号
+    output reg vsync, hsync // 同步信号
 );
     reg [9:0] nowh,nowv;
-    always @ (posedge vga_clk or negedge reset) begin
+    initial begin
+        nowh=0;nowv=0;
+        r=4'd0;g=4'd0;b=4'd0;
+        addr_valid=0;
+        vsync=0;hsync=0;
+        row_addr=0;col_addr=0;
+    end
+    always @ (posedge vga_clk) begin
         nowh <= (!reset || nowh==10'd799)?10'd0:(nowh+10'd1);
     end
     
