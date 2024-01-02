@@ -1,3 +1,4 @@
+typedef reg [2:0] int3_t;
 
 module top_VGA(
     input clk,
