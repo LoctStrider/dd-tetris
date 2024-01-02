@@ -14,7 +14,7 @@ module clkdiv #(
     wire [31:0] cnt_next = cnt + 1;
 
     always @(posedge board_clk) begin
-        if (cnt < PERIOD / 2)
+        if (cnt < PERIOD / 4)
         begin
             cnt <= cnt_next;
         end
