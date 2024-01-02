@@ -1,4 +1,4 @@
-
+typedef  reg signed[2:0] int3_t;
 //用于对于给定的map，调用VGA进行整张图的输出。
 module VGA_ctrl(
 
@@ -26,7 +26,9 @@ module VGA_ctrl(
     VGA VGA1(
         .vga_clk(vga_clk),.reset(reset),
         .color(color),.row_addr(nowv[8:0]),.col_addr(nowh),
-        .addr_valid(addr_valid)
+        .addr_valid(addr_valid),
+        .r(r),.g(g),.b(b),
+        .hsync(hsync),.vsync(vsync)
     );
     
     
@@ -34,8 +36,8 @@ module VGA_ctrl(
     reg [9:0]id_row;
     reg [9:0]id_col;
     reg[11:0]color_now;
-    assign id_row=(nowv-10'd35)/10'd20;//行所在的格子编号（从0开始）
-    assign id_col=(nowh-10'd143)/10'd20;//列所在的格子编号
+    assign id_row=(nowv)/10'd20;//行所在的格子编号（从0开始）
+    assign id_col=(nowh)/10'd20;//列所在的格子编号
     assign color=color_now;
     //注意，这个编号和map的下标不同。map之中存的是边框之外的格子的信息，而加上边框之后向右下偏移了一位，即id_row=x,id_col=y对应map[x+1][y+1].
     //同理，对于右边用来显示下一个块的3*4的格子阵，其左上角对应的id_row=1,id_col=12.
