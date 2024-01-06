@@ -5,16 +5,18 @@ module PS2 (
 );
     // TODO
     
-    //定义寄存器与线网
-    reg clk_flag0, clk_flag1, clk_flag2;
-    reg [7:0] temp_data;
-    reg [3:0] num;
-    wire negedge_ps2_clk = !clk_flag1 & clk_flag2;
-    reg negedge_ps2_clk_shift;
-    reg [9:0] data;
-    reg data_break, data_done, data_expand;
+    // 定义寄存器与线网
+    reg clk_flag0, clk_flag1, clk_flag2; // 一组移位寄存器，用于检测PS2_clk的下降沿
+    reg [7:0] temp_data; // 临时存储输入信号
+    reg [3:0] num; // 计数寄存器
+    wire negedge_ps2_clk = !clk_flag1 & clk_flag2; // 检测是否为PS2_clk下降沿
+    reg negedge_ps2_clk_shift; // 将negedge_ps2_clk的值传递至下一时钟周期
+    reg [9:0] data; // 处理后得到的输入数据
+    reg data_break; // 是否为断码
+    reg data_expand; // 是否为两字节数据
+    reg data_done; // 输入信号是否全部读入且处理完毕
 
-    //检测PS2_clk下降沿
+    // 检测PS2_clk下降沿
     always@(posedge clk or posedge reset) begin
         if(reset) begin
             clk_flag0 <= 1'b0;
@@ -31,17 +33,17 @@ module PS2 (
         negedge_ps2_clk_shift <= negedge_ps2_clk;
     end
 
-    //对PS2_clk的周期进行计数
+    // 对PS2_clk的周期进行计数
     always@(posedge clk or posedge reset) begin
 	    if(reset)
 		    num <= 4'd0;
 	    else if (num == 4'd11)
-		    num <= 4'd0;//到达上限，重置
+		    num <= 4'd0; // 到达上限，重置
 	    else if (negedge_ps2_clk)
-		    num <= num + 1'b1;
+		    num <= num + 1'b1; // num值自加
     end
     
-    //读入串行输入信号
+    // 读入串行输入信号
     always@(posedge clk or posedge reset) begin
         if(reset)
             temp_data <= 8'd0;
@@ -56,12 +58,12 @@ module PS2 (
                 4'd8: temp_data[6] <= ps2_data;
                 4'd9: temp_data[7] <= ps2_data;
                 default: temp_data <= temp_data;
-            endcase
+            endcase // 根据num的值决定哪一位读入
         end
         else temp_data <= temp_data;
     end
     
-    //处理输入信号
+    // 处理输入信号
     always@(posedge clk or posedge reset) begin
         if(reset) begin
             data_break <= 1'b0;
@@ -71,12 +73,12 @@ module PS2 (
         end
         else if(num == 4'd11) begin
             if(temp_data == 8'hE0) 
-                data_expand <= 1'b1;
+                data_expand <= 1'b1; // 检测到输入信号的通码为两字节
             else if(temp_data == 8'hF0)
-                data_break <= 1'b1;
+                data_break <= 1'b1; // 检测到输入信号是断码
             else begin
-                data<={data_expand, data_break, temp_data};
-                data_done <= 1'b1;
+                data<={data_expand, data_break, temp_data}; // 合并数据
+                data_done <= 1'b1; // 信号处理完毕
                 data_expand <= 1'b0;
                 data_break <= 1'b0;
             end
@@ -89,7 +91,7 @@ module PS2 (
         end
     end
     
-    //更新按键状态
+    // 更新按键状态
     always @(posedge clk) begin
         if(data_done) begin
             case(data)
