@@ -7,17 +7,11 @@ module top_VGA(
     output reg vsync, hsync // 同步信号
     );
     
-    reg [31:0]clkdiv;
-	always@(posedge clk) begin
-		clkdiv <= clkdiv + 1'b1;
-	end
-    
-    wire vga_clk = clkdiv[1];
-    // clkdiv clkdiv1(
-    //     .board_clk(clk),
-    //     .div_clk(vga_clk)
-    // );
-    
+    wire vga_clk;
+    clkdiv #(.PERIOD(2)) clkdiv1(
+        .board_clk(clk),
+        .div_clk(vga_clk)
+    );
     
     wire up, down, left, right, enter;
     reg active_exist;
@@ -49,7 +43,7 @@ module top_VGA(
     
     VGA_ctrl VGA_ctrl1(
         .vga_clk(vga_clk),
-        .reset(1'd1),
+        .reset(1'd0),
         .map(map),
         .active_center_row(0),
         .active_center_col(0),
