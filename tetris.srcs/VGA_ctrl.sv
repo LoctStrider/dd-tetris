@@ -15,8 +15,6 @@ module VGA_ctrl(
     input shortint next_delta_rows[2:0],
     input shortint next_delta_cols[2:0],
     
-    output [11:0] color,
-    output reg addr_valid, // 下一个像素点地址是否在有效范围
     output reg [3:0] r, g, b, // 颜色输出
     output reg hsync, vsync // 同步信号
     
@@ -28,6 +26,8 @@ module VGA_ctrl(
         nowh = 0;
         nowv = 0;
     end
+
+    wire addr_valid;
 
     VGA VGA1(
         .vga_clk(vga_clk),.reset(reset),
@@ -42,7 +42,7 @@ module VGA_ctrl(
     shortint id_row = nowv / 20;
     shortint id_col = nowh / 20;
     reg[11:0]color_now;
-    assign color=color_now;
+    wire [11:0] color=color_now;
     //注意，这个编号和map的下标不同。map之中存的是边框之外的格子的信息，而加上边框之后向右下偏移了一位，即id_row=x,id_col=y对应map[x+1][y+1].
     //同理，对于右边用来显示下一个块的3*4的格子阵，其左上角对应的id_row=1,id_col=12.
     shortint active_row_0 = active_center_row + active_delta_rows[0];
