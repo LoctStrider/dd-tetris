@@ -65,27 +65,29 @@ module top_VGA(
     
     
     
-    int3_t [2:0] nr;
-    int3_t [2:0] nc;
-    assign nr[0]=-3'sd1;
-    assign nr[1]=-3'sd2;
-    assign nr[2]=-3'sd3;
+    shortint nr[2:0];
+    shortint nc[2:0];
+    reg [19:0][9:0] map;
     
-    assign nc[0]=3'sd0;
-    assign nc[1]=3'sd0;
-    assign nc[2]=3'sd0;
-    
-    wire [19:0][9:0] map;
+    initial begin
+        map = 0;
+        nr[0] = -1;
+        nr[1] = 2;
+        nr[2] = 1;
+        nc[0] = 0;
+        nc[1] = 0;
+        nc[2] = 0;
+    end
     
     
     VGA_ctrl VGA_ctrl1(
         .vga_clk(vga_clk),
-        .reset(1),
+        .reset(1'd1),
         .map(map),
 //        .active_center_row(0),
 //        .active_center_col(0),
-        .next_center_row(5'd1),
-        .next_center_col(4'd12),
+        .next_center_row(1),
+        .next_center_col(12),
         .active_exist(0),
 //        .active_delta_rows(0),
 //        .active_delta_cols(0),
