@@ -2,25 +2,9 @@
 
 module top_VGA(
     input clk,
-//    input [19:0][9:0]map,
-//    input [4:0] active_center_row,
-//    input [3:0] active_center_col,
-//    input [4:0] next_center_row,
-//    input [3:0] next_center_col,
-//    input active_exist,
-//    int3_t [2:0] active_delta_rows,
-//    int3_t [2:0] active_delta_cols,
-//    int3_t [2:0] next_delta_rows,
-//    int3_t [2:0] next_delta_cols,
-    
-//    output [11:0] color,
-//    output reg addr_valid, // 下一个像素点地址是否在有效范围
+    input ps2_clk, ps2_data,
     output reg [3:0] r, g, b, // 颜色输出
     output reg vsync, hsync // 同步信号
-//    output reg [8:0] row_addr, // 像素点的行地址
-//    output reg [9:0] col_addr, // 下一个像素点的列地址
-//    output reg addr_valid // 下一个像素点地址是否在有效范围
-//    output reg vga_clk
     );
     
     reg [31:0]clkdiv;
@@ -35,36 +19,8 @@ module top_VGA(
     // );
     
     
-    
-//    VGA VGA1(
-//        .vga_clk(clkdiv[1]),
-//        .clrn(1),
-//        .d_in(12'b000011111111),
-//        .r(r),.g(g),.b(b),
-//        .vs(vsync),
-//        .hs(hsync)
-////        .row_addr(row_addr),
-////        .col_addr(col_addr),
-////        .addr_valid(addr_valid)
-    
-//    );
-    
-    
-//    VGA VGA1(
-//        .vga_clk(clkdiv[1]),
-//        .reset(1),
-//        .color(12'b000011111111),
-//        .r(r),.g(g),.b(b),
-//        .vsync(vsync),
-//        .hsync(hsync)
-////        .row_addr(row_addr),
-////        .col_addr(col_addr),
-////        .addr_valid(addr_valid)
-    
-//    );
-    
-    
-    
+    wire up, down, left, right, enter;
+    reg active_exist;
     shortint nr[2:0];
     shortint nc[2:0];
     reg [19:0][9:0] map;
@@ -97,9 +53,16 @@ module top_VGA(
         .vsync(vsync),
         .hsync(hsync)
     );
-    
-    
-    
-    
-    
+
+    PS2 ps2(
+        .clk(clk),
+        .reset(0),
+        .ps2_clk(ps2_clk),
+        .ps2_data(ps2_data),
+        .up(up),
+        .down(down),
+        .left(left),
+        .right(right),
+        .enter(enter)
+    );
 endmodule
