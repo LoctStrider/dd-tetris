@@ -21,18 +21,20 @@ module top_VGA(
     
     wire up, down, left, right, enter;
     reg active_exist;
-    shortint nr[2:0];
-    shortint nc[2:0];
+    tetro_type_t active_type, next_type;
     reg [19:0][9:0] map;
+    shortint active_rows[2:0], active_cols[2:0];
+    shortint next_rows[2:0], next_cols[2:0];
+
+    tetrominoes_factory next_factory(
+        .tetro_type(next_type),
+        .delta_rows(next_rows),
+        .delta_cols(next_cols),
+        .next_type()
+    );
     
     initial begin
         map = 0;
-        nr[0] = -1;
-        nr[1] = 2;
-        nr[2] = 1;
-        nc[0] = 0;
-        nc[1] = 0;
-        nc[2] = 0;
     end
     
     
@@ -40,15 +42,15 @@ module top_VGA(
         .vga_clk(vga_clk),
         .reset(1'd1),
         .map(map),
-//        .active_center_row(0),
-//        .active_center_col(0),
+        .active_center_row(0),
+        .active_center_col(0),
         .next_center_row(1),
         .next_center_col(12),
-        .active_exist(0),
-//        .active_delta_rows(0),
-//        .active_delta_cols(0),
-        .next_delta_rows(nr),
-        .next_delta_cols(nc),
+        .active_exist(active_exist),
+        .active_delta_rows(active_rows),
+        .active_delta_cols(active_cols),
+        .next_delta_rows(next_rows),
+        .next_delta_cols(next_cols),
         .r(r),.g(g),.b(b),
         .vsync(vsync),
         .hsync(hsync)
