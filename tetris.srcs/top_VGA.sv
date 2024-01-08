@@ -27,6 +27,7 @@ module top_VGA(
     shortint next_rows[2:0], next_cols[2:0];
 
     tetrominoes_factory active_factory(
+        .clk(clk),
         .tetro_type(active_type),
         .delta_rows(active_rows),
         .delta_cols(active_cols),
@@ -34,6 +35,7 @@ module top_VGA(
     );
 
     tetrominoes_factory next_factory(
+        .clk(clk),
         .tetro_type(next_type),
         .delta_rows(next_rows),
         .delta_cols(next_cols),
