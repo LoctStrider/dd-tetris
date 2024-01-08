@@ -1,4 +1,4 @@
-typedef  reg signed[2:0] int3_t;
+`include "types.svh"
 //用于对于给定的map，调用VGA进行整张图的输出。
 module VGA_ctrl(
 
