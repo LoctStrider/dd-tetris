@@ -21,10 +21,17 @@ module top_VGA(
     
     wire up, down, left, right, enter;
     reg active_exist;
-    tetro_type_t active_type, next_type;
+    tetro_type_t active_type, next_type, active_rotated_type;
     reg [19:0][9:0] map;
     shortint active_rows[2:0], active_cols[2:0];
     shortint next_rows[2:0], next_cols[2:0];
+
+    tetrominoes_factory active_factory(
+        .tetro_type(active_type),
+        .delta_rows(active_rows),
+        .delta_cols(active_cols),
+        .next_type(active_rotated_type)
+    );
 
     tetrominoes_factory next_factory(
         .tetro_type(next_type),
