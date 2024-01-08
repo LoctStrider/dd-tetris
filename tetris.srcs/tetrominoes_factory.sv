@@ -1,6 +1,7 @@
 `include "types.svh"
 
 module tetrominoes_factory(
+    input clk,
     input tetro_type_t tetro_type,
     output shortint delta_rows[2:0],
     output shortint delta_cols[2:0],
@@ -13,7 +14,7 @@ module tetrominoes_factory(
 //12-15: T
 //16-17: l
 //18: square
-    always @(*) begin
+    always @(posedge clk) begin
         case(tetro_type)
             0 :begin delta_rows[0]=-1;delta_rows[1]=1;delta_rows[2]=1;delta_cols[0]=0;delta_cols[1]=-1;delta_cols[2]=0;next_type=3;   end
             1 :begin delta_rows[0]=0;delta_rows[1]=0;delta_rows[2]=1;delta_cols[0]=-1;delta_cols[1]=1;delta_cols[2]=1;next_type=0;    end
