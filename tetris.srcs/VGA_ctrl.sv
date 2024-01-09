@@ -1,5 +1,5 @@
 `include "types.svh"
-//用于对于给定的map，调用VGA进行整张图的输出。
+//用于对于给定的map，调用VGA进行整张图的输出�?
 module VGA_ctrl(
 
     input vga_clk,
@@ -66,11 +66,11 @@ module VGA_ctrl(
         id_row = nowv / 20;
         id_col = nowh / 20;
         if(addr_valid)S <= 0;
-        else if(id_row==0&&id_col<=15)S <= 3;//第一行灰色框
-        else if(id_row==5&&id_col>=11&&id_col<=15)S <= 3;
-        else if(id_row==21&&id_col<=11)S <= 3;//最后一行灰色框
+        else if(id_row==0&&id_col<=16)S <= 3;//第一行灰色框
+        else if(id_row==5&&id_col>=11&&id_col<=16)S <= 3;
+        else if(id_row==21&&id_col<=11)S <= 3;//�?后一行灰色框
         else if(id_row<=21&&(id_col==0||id_col==11))S<=3;//两列的灰色框
-        else if(id_row<=5&&id_col==15)S <= 3;//灰色小框
+        else if(id_row<=5&&id_col==16)S <= 3;//灰色小框
         else if(id_row<=20 && id_col<=10)begin
             if(active_exist&& (id_row-1==active_center_row) && (id_col-1==active_center_col) ) S <= 2;//正在掉落的块
             else if(active_exist&& (id_row-1==active_row_0) && (id_col-1==active_col_0) ) S <= 2;
@@ -80,7 +80,7 @@ module VGA_ctrl(
             else S<=1;
         end
         else begin
-            if( (id_row-1==next_center_row) && (id_col-1==next_center_col) ) S <= 2;//旁边显示的下一个块
+            if( (id_row-1==next_center_row) && (id_col-1==next_center_col) ) S <= 2;//旁边显示的下�?个块
             else if( (id_row-1==next_row_0) && (id_col-1==next_col_0) ) S <= 2;
             else if( (id_row-1==next_row_1) && (id_col-1==next_col_1) ) S <= 2;
             else if( (id_row-1==next_row_2) && (id_col-1==next_col_2) ) S <= 2;
@@ -97,7 +97,7 @@ endmodule
 
 //if(id_row==0&&id_col<=17)S <= 1;//第一行灰色框
 //        else if(id_row==5&&id_col>=13&&id_col<=17)S <=1;
-//        else if(id_row==23&&id_col<=13)S<=1;//最后一行灰色框
+//        else if(id_row==23&&id_col<=13)S<=1;//�?后一行灰色框
 //        else if(id_row<=23&&(id_col==0||id_col==13))S<=1;//两列的灰色框
 //        else if(id_row<=5&&id_col==17)S <= 1;//灰色小框
 //        else S <= 0;
