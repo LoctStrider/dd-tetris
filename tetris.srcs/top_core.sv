@@ -59,9 +59,10 @@ module top_core();
     );
 
     reg [4:0] rand_data;
+    logic lfsr_reset;
     fibonacci_lfsr_nbit #(.BITS(5)) lfsr(
         .clk(game_clk),
-        .reset(1'b0),
+        .reset(lfsr_reset),
         .data(rand_data)
     );
     posedge_detector up_posedge(
@@ -89,7 +90,7 @@ module top_core();
     );
 
     always @(speedup)
-        period = (speedup ? 20_000_000 : 100_000_000);
+        period = (speedup ? 4 : 6);
 
     logic rotated_collision;
     collision_detector rotated_detector(
@@ -294,12 +295,19 @@ module top_core();
         gen_new_tetro = 0;
         cleanup = 0;
         settle = 0;
+        game_run = 0;
+        down = 0;
+        game_clk = 0;
+        right = 0;
+        up = 0;
 
         for (clk_i = 0; clk_i < 200; clk_i += 1) begin
             clk = clk_i & 1;
             enter = (10 <= clk_i && clk_i < 20);
+            left = (40 <= clk_i && clk_i < 50);
+            lfsr_reset = (0 <= clk_i && clk_i < 2);
 
-            #20;
+            #10;
         end
     end
 

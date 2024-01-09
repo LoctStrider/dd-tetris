@@ -7,7 +7,7 @@ module map_clearer(
     output finished
 );
     reg [19:0][9:0]g;
-    reg signed [5:0] t;
+    shortint t;
 
     logic enable_pe;
     posedge_detector enable_posedge(
@@ -18,28 +18,36 @@ module map_clearer(
     assign finished = (i == 0);
 
     always @(posedge clk) begin
-        if (enable_pe)
-            t = 19;
+        if (enable_pe) begin
+            // t = 19;
+            g = map;
+        end
         if (enable) begin
-            if (t >= 0)
-                if (map[t] == 10'b1111111111)
-                    t = t - 1;
-            if (t >= 0)
-                if (map[t] == 10'b1111111111)
-                    t = t - 1;
-            if (t >= 0)
-                if (map[t] == 10'b1111111111)
-                    t = t - 1;
-            if (t >= 0)
-                if (map[t] == 10'b1111111111)
-                    t = t - 1;
-            if(t<0)begin
-                g[i] = 10'b0;
+            if (g[i] == '1) begin
+                for (t = 19; t > 0; t -= 1)
+                    if (t <= i)
+                        g[t] = g[t - 1];
+                g[0] = '0;
             end
-            else begin
-                g[i] = map[t];
-                t = t - 1;
-            end
+            // if (t >= 0)
+            //     if (map[t] == 10'b1111111111)
+            //         t = t - 1;
+            // if (t >= 0)
+            //     if (map[t] == 10'b1111111111)
+            //         t = t - 1;
+            // if (t >= 0)
+            //     if (map[t] == 10'b1111111111)
+            //         t = t - 1;
+            // if (t >= 0)
+            //     if (map[t] == 10'b1111111111)
+            //         t = t - 1;
+            // if(t<0)begin
+            //     g[i] = 10'b0;
+            // end
+            // else begin
+            //     g[i] = map[t];
+            //     t = t - 1;
+            // end
         end
     end
     

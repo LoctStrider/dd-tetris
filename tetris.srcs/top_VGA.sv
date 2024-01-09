@@ -163,7 +163,6 @@ module top_VGA(
     logic fall_succeed;
     shortint fall_center_row, fall_center_col;
     tetromino_faller faller(
-        .clk(clk),
         .center_row(active_center_row),
         .center_col(active_center_col),
         .delta_rows(active_rows),
@@ -207,104 +206,102 @@ module top_VGA(
     );
 
     always @(posedge clk) begin
-        new_active_exist <= active_exist;
-        new_active_center_row <= active_center_row;
-        new_active_center_col <= active_center_col;
-        new_active_type <= active_type;
-        new_next_type <= next_type;
-        new_map <= map;
+        new_active_exist = active_exist;
+        new_active_center_row = active_center_row;
+        new_active_center_col = active_center_col;
+        new_active_type = active_type;
+        new_next_type = next_type;
+        new_map = map;
 
         if (in_game && game_run) begin
             if (!active_exist) begin
-                gen_new_tetro <= 1;
+                gen_new_tetro = 1;
             end
             else begin
                 if (active_collision) begin
-                    in_game <= 0;
+                    in_game = 0;
                 end
                 else if (!down_collision) begin
-                    move_down <= 1;
+                    move_down = 1;
                 end
                 else begin
-                    settle <= 1;
-                    cleanup <= 1;
+                    settle = 1;
+                    cleanup = 1;
                 end
             end
         end
 
         if (gen_new_tetro) begin
-            gen_new_tetro <= 0;
-            new_active_exist <= 1;
-            new_active_center_row <= placed_row;
-            new_active_center_col <= placed_col;
-            new_active_type <= next_type;
-            new_next_type <= rand_data;
+            gen_new_tetro = 0;
+            new_active_exist = 1;
+            new_active_center_row = placed_row;
+            new_active_center_col = placed_col;
+            new_active_type = next_type;
+            new_next_type = rand_data;
         end
         else if (move_left) begin
-            delta_center_row <= 0;
-            delta_center_col <= -1;
+            delta_center_row = 0;
+            delta_center_col = -1;
             if (fall_succeed) begin
-                new_active_center_row <= fall_center_row;
-                new_active_center_col <= fall_center_col;
+                new_active_center_row = fall_center_row;
+                new_active_center_col = fall_center_col;
             end
         end
         else if (move_right) begin
-            delta_center_row <= 0;
-            delta_center_col <= 1;
+            delta_center_row = 0;
+            delta_center_col = 1;
             if (fall_succeed) begin
-                new_active_center_row <= fall_center_row;
-                new_active_center_col <= fall_center_col;
+                new_active_center_row = fall_center_row;
+                new_active_center_col = fall_center_col;
             end
         end
         else if (move_down) begin
-            move_down <= 0;
-            delta_center_row <= 1;
-            delta_center_col <= 0;
+            move_down = 0;
+            delta_center_row = 1;
+            delta_center_col = 0;
             if (fall_succeed) begin
-                new_active_center_row <= fall_center_row;
-                new_active_center_col <= fall_center_col;
+                new_active_center_row = fall_center_row;
+                new_active_center_col = fall_center_col;
             end
         end
         else if (start_game) begin
-            debug <= 1;
-            in_game <= 1;
-            new_map <= 0;
-            new_active_exist <= 0;
-            new_next_type <= rand_data % 19;
+            in_game = 1;
+            new_map = 0;
+            new_active_exist = 0;
+            new_next_type = rand_data % 19;
         end
         else if (rotate) begin
             if (!rotated_collision) begin
-                new_active_type <= active_rotated_type;
+                new_active_type = active_rotated_type;
             end
         end
         else if (settle) begin
-            settle <= 0;
-            new_map <= map_settled;
+            settle = 0;
+            new_map = map_settled;
         end
         else if (cleanup) begin
-            cleanup <= 0;
-            clear_index <= 19;
-            clear_enable <= 1;
+            cleanup = 0;
+            clear_index = 19;
+            clear_enable = 1;
         end
 
         if (clear_enable) begin
             if (clear_index == 0) begin
-                clear_finished <= 1;
-                clear_enable <= 0;
-                new_map <= map_cleared;
+                clear_enable = 0;
+                new_map = map_cleared;
             end
             else
-                clear_index <= clear_index - 1;
+                clear_index = clear_index - 1;
         end
     end
 
     always @(negedge clk) begin
-        active_exist <= new_active_exist;
-        active_center_row <= new_active_center_row;
-        active_center_col <= new_active_center_col;
-        active_type <= new_active_type;
-        next_type <= new_next_type;
-        map <= new_map;
+        active_exist = new_active_exist;
+        active_center_row = new_active_center_row;
+        active_center_col = new_active_center_col;
+        active_type = new_active_type;
+        next_type = new_next_type;
+        map = new_map;
     end
 
     VGA_ctrl VGA_ctrl1(

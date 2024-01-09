@@ -39,27 +39,32 @@ module VGA_ctrl(
     
     
     reg [1:0]S;
-    shortint id_row = nowv / 20;
-    shortint id_col = nowh / 20;
+    shortint id_row;
+    shortint id_col;
     reg[11:0]color_now;
     wire [11:0] color=color_now;
     //注意，这个编号和map的下标不同。map之中存的是边框之外的格子的信息，而加上边框之后向右下偏移了一位，即id_row=x,id_col=y对应map[x+1][y+1].
     //同理，对于右边用来显示下一个块的3*4的格子阵，其左上角对应的id_row=1,id_col=12.
-    shortint active_row_0 = active_center_row + active_delta_rows[0];
-    shortint active_col_0 = active_center_col + active_delta_cols[0];
-    shortint active_row_1 = active_center_row + active_delta_rows[1];
-    shortint active_col_1 = active_center_col + active_delta_cols[1];
-    shortint active_row_2 = active_center_row + active_delta_rows[2];
-    shortint active_col_2 = active_center_col + active_delta_cols[2];
-
-    shortint next_row_0 = next_center_row + next_delta_rows[0];
-    shortint next_col_0 = next_center_col + next_delta_cols[0];
-    shortint next_row_1 = next_center_row + next_delta_rows[1];
-    shortint next_col_1 = next_center_col + next_delta_cols[1];
-    shortint next_row_2 = next_center_row + next_delta_rows[2];
-    shortint next_col_2 = next_center_col + next_delta_cols[2];
+    shortint active_row_0,active_col_0,active_row_1,active_col_1,active_row_2,active_col_2;
+    shortint next_row_0,next_col_0,next_row_1,next_col_1,next_row_2,next_col_2;
     
     always @ (posedge vga_clk) begin
+        active_row_0 = active_center_row + active_delta_rows[0];
+        active_col_0 = active_center_col + active_delta_cols[0];
+        active_row_1 = active_center_row + active_delta_rows[1];
+        active_col_1 = active_center_col + active_delta_cols[1];
+        active_row_2 = active_center_row + active_delta_rows[2];
+        active_col_2 = active_center_col + active_delta_cols[2];
+
+        next_row_0 = next_center_row + next_delta_rows[0];
+        next_col_0 = next_center_col + next_delta_cols[0];
+        next_row_1 = next_center_row + next_delta_rows[1];
+        next_col_1 = next_center_col + next_delta_cols[1];
+        next_row_2 = next_center_row + next_delta_rows[2];
+        next_col_2 = next_center_col + next_delta_cols[2];
+
+        id_row = nowv / 20;
+        id_col = nowh / 20;
         if(addr_valid)S <= 0;
         else if(id_row==0&&id_col<=15)S <= 3;//第一行灰色框
         else if(id_row==5&&id_col>=11&&id_col<=15)S <= 3;

@@ -24,5 +24,4 @@ module fibonacci_lfsr_nbit
       else
          data <= data_next;
    end
-
 endmodule

@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0 ps"></ZoomStartTime>
-      <ZoomEndTime time="8 ps"></ZoomEndTime>
-      <Cursor1Time time="1,000,000 ps"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="461.246 ns"></ZoomEndTime>
+      <Cursor1Time time="261.118 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="404"></NameColumnWidth>
-      <ValueColumnWidth column_width="142"></ValueColumnWidth>
+      <ValueColumnWidth column_width="118"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="56" />
+   <WVObjectSize size="77" />
    <wvobject fp_name="/top_core/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -117,18 +117,6 @@
       <obj_property name="ElementShortName">gen_new_tetro</obj_property>
       <obj_property name="ObjectShortName">gen_new_tetro</obj_property>
    </wvobject>
-   <wvobject fp_name="/top_core/cleanup" type="logic">
-      <obj_property name="ElementShortName">cleanup</obj_property>
-      <obj_property name="ObjectShortName">cleanup</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/settle" type="logic">
-      <obj_property name="ElementShortName">settle</obj_property>
-      <obj_property name="ObjectShortName">settle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/speedup" type="logic">
-      <obj_property name="ElementShortName">speedup</obj_property>
-      <obj_property name="ObjectShortName">speedup</obj_property>
-   </wvobject>
    <wvobject fp_name="/top_core/new_active_exist" type="logic">
       <obj_property name="ElementShortName">new_active_exist</obj_property>
       <obj_property name="ObjectShortName">new_active_exist</obj_property>
@@ -164,14 +152,6 @@
    <wvobject fp_name="/top_core/game_clk" type="logic">
       <obj_property name="ElementShortName">game_clk</obj_property>
       <obj_property name="ObjectShortName">game_clk</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/rotated_rows" type="array">
-      <obj_property name="ElementShortName">rotated_rows[2:0][15:0]</obj_property>
-      <obj_property name="ObjectShortName">rotated_rows[2:0][15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/rotated_cols" type="array">
-      <obj_property name="ElementShortName">rotated_cols[2:0][15:0]</obj_property>
-      <obj_property name="ObjectShortName">rotated_cols[2:0][15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/top_core/rand_data" type="array">
       <obj_property name="ElementShortName">rand_data[4:0]</obj_property>
@@ -217,32 +197,136 @@
       <obj_property name="ElementShortName">fall_center_col[15:0]</obj_property>
       <obj_property name="ObjectShortName">fall_center_col[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/top_core/map_cleared" type="array">
-      <obj_property name="ElementShortName">map_cleared[19:0][9:0]</obj_property>
-      <obj_property name="ObjectShortName">map_cleared[19:0][9:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/clear_index" type="array">
-      <obj_property name="ElementShortName">clear_index[15:0]</obj_property>
-      <obj_property name="ObjectShortName">clear_index[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/clear_enable" type="logic">
-      <obj_property name="ElementShortName">clear_enable</obj_property>
-      <obj_property name="ObjectShortName">clear_enable</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/clear_finished" type="logic">
-      <obj_property name="ElementShortName">clear_finished</obj_property>
-      <obj_property name="ObjectShortName">clear_finished</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_core/map_settled" type="array">
-      <obj_property name="ElementShortName">map_settled[19:0][9:0]</obj_property>
-      <obj_property name="ObjectShortName">map_settled[19:0][9:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/top_core/game_run" type="logic">
       <obj_property name="ElementShortName">game_run</obj_property>
       <obj_property name="ObjectShortName">game_run</obj_property>
    </wvobject>
-   <wvobject fp_name="/top_core/clk_i" type="array">
-      <obj_property name="ElementShortName">clk_i[31:0]</obj_property>
-      <obj_property name="ObjectShortName">clk_i[31:0]</obj_property>
+   <wvobject fp_name="/top_core/placer/center_row" type="array">
+      <obj_property name="ElementShortName">center_row[15:0]</obj_property>
+      <obj_property name="ObjectShortName">center_row[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/center_col" type="array">
+      <obj_property name="ElementShortName">center_col[15:0]</obj_property>
+      <obj_property name="ObjectShortName">center_col[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/delta_rows" type="array">
+      <obj_property name="ElementShortName">delta_rows[2:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">delta_rows[2:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/delta_cols" type="array">
+      <obj_property name="ElementShortName">delta_cols[2:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">delta_cols[2:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/map" type="array">
+      <obj_property name="ElementShortName">map[19:0][9:0]</obj_property>
+      <obj_property name="ObjectShortName">map[19:0][9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/new_center_row" type="array">
+      <obj_property name="ElementShortName">new_center_row[15:0]</obj_property>
+      <obj_property name="ObjectShortName">new_center_row[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/new_center_col" type="array">
+      <obj_property name="ElementShortName">new_center_col[15:0]</obj_property>
+      <obj_property name="ObjectShortName">new_center_col[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/row_0" type="array">
+      <obj_property name="ElementShortName">row_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/row_1" type="array">
+      <obj_property name="ElementShortName">row_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/row_2" type="array">
+      <obj_property name="ElementShortName">row_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/col_0" type="array">
+      <obj_property name="ElementShortName">col_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/col_1" type="array">
+      <obj_property name="ElementShortName">col_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/col_2" type="array">
+      <obj_property name="ElementShortName">col_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/row_min" type="array">
+      <obj_property name="ElementShortName">row_min[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_min[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/row_max" type="array">
+      <obj_property name="ElementShortName">row_max[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_max[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/col_min" type="array">
+      <obj_property name="ElementShortName">col_min[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_min[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/placer/col_max" type="array">
+      <obj_property name="ElementShortName">col_max[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_max[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/center_row" type="array">
+      <obj_property name="ElementShortName">center_row[15:0]</obj_property>
+      <obj_property name="ObjectShortName">center_row[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/center_col" type="array">
+      <obj_property name="ElementShortName">center_col[15:0]</obj_property>
+      <obj_property name="ObjectShortName">center_col[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/delta_rows" type="array">
+      <obj_property name="ElementShortName">delta_rows[2:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">delta_rows[2:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/delta_cols" type="array">
+      <obj_property name="ElementShortName">delta_cols[2:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">delta_cols[2:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/map" type="array">
+      <obj_property name="ElementShortName">map[19:0][9:0]</obj_property>
+      <obj_property name="ObjectShortName">map[19:0][9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/collision" type="logic">
+      <obj_property name="ElementShortName">collision</obj_property>
+      <obj_property name="ObjectShortName">collision</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/row_0" type="array">
+      <obj_property name="ElementShortName">row_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/row_1" type="array">
+      <obj_property name="ElementShortName">row_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/row_2" type="array">
+      <obj_property name="ElementShortName">row_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">row_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/col_0" type="array">
+      <obj_property name="ElementShortName">col_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/col_1" type="array">
+      <obj_property name="ElementShortName">col_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/col_2" type="array">
+      <obj_property name="ElementShortName">col_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">col_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/map_collision" type="logic">
+      <obj_property name="ElementShortName">map_collision</obj_property>
+      <obj_property name="ObjectShortName">map_collision</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/row_range_collision" type="logic">
+      <obj_property name="ElementShortName">row_range_collision</obj_property>
+      <obj_property name="ObjectShortName">row_range_collision</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_core/faller/detector/col_range_collision" type="logic">
+      <obj_property name="ElementShortName">col_range_collision</obj_property>
+      <obj_property name="ObjectShortName">col_range_collision</obj_property>
    </wvobject>
 </wave_config>

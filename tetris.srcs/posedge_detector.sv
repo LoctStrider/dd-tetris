@@ -6,9 +6,8 @@ module posedge_detector(
 
     reg sig_lst;
 
-    always @(negedge clk)
-        sig_lst <= sig;
-
-    always @(posedge clk)
+    always @(posedge clk) begin
         posedge_sig <= sig & ~sig_lst;
+        sig_lst <= sig;
+    end
 endmodule
