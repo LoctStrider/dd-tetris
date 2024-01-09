@@ -51,6 +51,13 @@ module VGA_ctrl(
     shortint active_col_1 = active_center_col + active_delta_cols[1];
     shortint active_row_2 = active_center_row + active_delta_rows[2];
     shortint active_col_2 = active_center_col + active_delta_cols[2];
+
+    shortint next_row_0 = next_center_row + next_delta_rows[0];
+    shortint next_col_0 = next_center_col + next_delta_cols[0];
+    shortint next_row_1 = next_center_row + next_delta_rows[1];
+    shortint next_col_1 = next_center_col + next_delta_cols[1];
+    shortint next_row_2 = next_center_row + next_delta_rows[2];
+    shortint next_col_2 = next_center_col + next_delta_cols[2];
     
     always @ (posedge vga_clk) begin
         if(addr_valid)S <= 0;
@@ -61,17 +68,17 @@ module VGA_ctrl(
         else if(id_row<=5&&id_col==15)S <= 3;//灰色小框
         else if(id_row<=20 && id_col<=10)begin
             if(active_exist&& (id_row-1==active_center_row) && (id_col-1==active_center_col) ) S <= 2;//正在掉落的块
-            else if(active_exist&& (id_row-1==active_row_0) && (id_col-1==active_center_col+active_delta_cols[0]) ) S <= 2;
-            else if(active_exist&& (id_row-1==active_row_1) && (id_col-1==active_center_col+active_delta_cols[1]) ) S <= 2;
-            else if(active_exist&& (id_row-1==active_row_2) && (id_col-1==active_center_col+active_delta_cols[2]) ) S <= 2;
+            else if(active_exist&& (id_row-1==active_row_0) && (id_col-1==active_col_0) ) S <= 2;
+            else if(active_exist&& (id_row-1==active_row_1) && (id_col-1==active_col_1) ) S <= 2;
+            else if(active_exist&& (id_row-1==active_row_2) && (id_col-1==active_col_2) ) S <= 2;
             else if(map[id_row-1][id_col-1]==0)S <=0;
             else S<=1;
         end
         else begin
             if( (id_row-1==next_center_row) && (id_col-1==next_center_col) ) S <= 2;//旁边显示的下一个块
-            else if( (id_row-1==next_center_row+next_delta_rows[0]) && (id_col-1==next_center_col+next_delta_cols[0]) ) S <= 2;
-            else if( (id_row-1==next_center_row+next_delta_rows[1]) && (id_col-1==next_center_col+next_delta_cols[1]) ) S <= 2;
-            else if( (id_row-1==next_center_row+next_delta_rows[2]) && (id_col-1==next_center_col+next_delta_cols[2]) ) S <= 2;
+            else if( (id_row-1==next_row_0) && (id_col-1==next_col_0) ) S <= 2;
+            else if( (id_row-1==next_row_1) && (id_col-1==next_col_1) ) S <= 2;
+            else if( (id_row-1==next_row_2) && (id_col-1==next_col_2) ) S <= 2;
             else S <= 0;
         end
         

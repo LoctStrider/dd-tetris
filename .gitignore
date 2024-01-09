@@ -103,3 +103,6 @@
 */*/*/bd/*/ip/*/*.tcl
 hw_handoff
 ipshared
+
+!tetris.runs/utils_1/top_VGA_routed.dcp
+!tetris.runs/utils_1/top_VGA_synthesis.dcp
