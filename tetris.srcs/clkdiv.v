@@ -1,7 +1,6 @@
-module clkdiv #(
-    PERIOD = 100_000_000 // 周期，单位为 10ns
-) (
+module clkdiv (
     input board_clk, // 来自 SWORD 板的时钟信号，周期为 10ns
+    input [31:0] period, // 周期，单位为 10ns
     output reg div_clk // 分频后的时钟信号
 );
 
@@ -14,7 +13,7 @@ module clkdiv #(
     wire [31:0] cnt_next = cnt + 1;
 
     always @(posedge board_clk) begin
-        if (cnt < PERIOD / 2)
+        if (cnt < period / 2)
         begin
             cnt <= cnt_next;
         end
