@@ -224,6 +224,11 @@ create_clock -period 10.000 -name clk [get_ports "clk"]
 # set_property IOSTANDARD LVCMOS15 [get_ports {switch[14]}]
 # set_property IOSTANDARD LVCMOS15 [get_ports {switch[15]}]
 
+set_property PACKAGE_PIN N18 [get_ports ps2_clk]
+set_property IOSTANDARD LVCMOS33 [get_ports ps2_clk]
+set_property PACKAGE_PIN M19 [get_ports ps2_data]
+set_property IOSTANDARD LVCMOS33 [get_ports ps2_data]
+
 # # VGA
 set_property PACKAGE_PIN N21 [get_ports {r[0]}]
 set_property PACKAGE_PIN N22 [get_ports {r[1]}]
