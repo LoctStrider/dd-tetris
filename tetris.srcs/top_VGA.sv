@@ -8,8 +8,9 @@ module top_VGA(
     );
     
     wire vga_clk;
-    clkdiv #(.PERIOD(2)) clkdiv1(
+    clkdiv clkdiv1(
         .board_clk(clk),
+        .period(2),
         .div_clk(vga_clk)
     );
     
