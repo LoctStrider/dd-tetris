@@ -95,16 +95,16 @@ module PS2 (
     always @(posedge clk) begin
         if(data_done) begin
             case(data)
-                10'h05A: enter <= 1;
-                10'h15A: enter <= 0;
-                10'h275: up <= 1;
-                10'h375: up <= 0;
-                10'h272: down <= 1;
-                10'h372: down <= 0;
-                10'h26B: left <= 1;
-                10'h36B: left <= 0;
-                10'h274: right <= 1;
-                10'h374: right <= 0;
+                10'h05A: enter <= 1'b1;
+                10'h15A: enter <= 1'b0;
+                10'h275: up <= 1'b1;
+                10'h375: up <= 1'b0;
+                10'h272: down <= 1'b1;
+                10'h372: down <= 1'b0;
+                10'h26B: left <= 1'b1;
+                10'h36B: left <= 1'b0;
+                10'h274: right <= 1'b1;
+                10'h374: right <= 1'b0;
             endcase
         end
         else begin
