@@ -177,10 +177,16 @@ module top_VGA(
     );
 
     logic [19:0][9:0] map_cleared;
+    shortint clear_index;
+    reg clear_enable;
+    logic clear_finished;
     map_clearer clearer(
         .clk(clk),
+        .i(clear_index),
         .map(map),
-        .next_map(map_cleared)
+        .enable(clear_enable),
+        .next_map(map_cleared),
+        .finished(clear_finished)
     );
 
     logic [19:0][9:0] map_settled;
@@ -260,6 +266,7 @@ module top_VGA(
             end
         end
         else if (start_game) begin
+            debug <= 1;
             in_game <= 1;
             new_map <= 0;
             new_active_exist <= 0;
@@ -276,7 +283,18 @@ module top_VGA(
         end
         else if (cleanup) begin
             cleanup <= 0;
-            new_map <= map_cleared;
+            clear_index <= 19;
+            clear_enable <= 1;
+        end
+
+        if (clear_enable) begin
+            if (clear_index == 0) begin
+                clear_finished <= 1;
+                clear_enable <= 0;
+                new_map <= map_cleared;
+            end
+            else
+                clear_index <= clear_index - 1;
         end
     end
 

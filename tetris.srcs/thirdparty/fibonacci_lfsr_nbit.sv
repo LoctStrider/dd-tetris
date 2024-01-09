@@ -7,19 +7,15 @@ module fibonacci_lfsr_nbit
     input             clk,
     input             reset,
 
-    output reg [BITS-1:0] data
+    output reg [4:0] data
     );
 
-   reg [BITS-1:0] data_next;
+   reg [4:0] data_next;
    always_comb begin
       data_next = data;
       repeat(BITS) begin
-         data_next = {(data_next[BITS-1]^data_next[1]), data_next[BITS-1:1]};
+         data_next = {(data_next[4]^data_next[1]), data_next[4:1]};
       end
-   end
-
-   initial begin
-        data = 5'h1f;
    end
 
    always_ff @(posedge clk or posedge reset) begin
