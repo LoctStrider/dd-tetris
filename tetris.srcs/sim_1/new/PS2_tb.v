@@ -8,7 +8,7 @@ reg pdata;
 wire up, down, left, right, enter;
 wire [7:0] data;
 wire [3:0] num;
-PS2 PS2333(
+PS2_tested PS2333(
     .clk(clk),
     .reset(reset),
     .ps2_clk(pclk),

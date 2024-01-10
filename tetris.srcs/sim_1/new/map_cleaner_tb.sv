@@ -4,7 +4,7 @@ module MP_CLR_TB();
 reg clk;
 reg [19:0] [9:0] map;
 wire [19:0] [9:0] next_map;
-map_clearer tested(
+map_clearer_old tested(
     .clk(clk),
     .map(map),
     .next_map(next_map)

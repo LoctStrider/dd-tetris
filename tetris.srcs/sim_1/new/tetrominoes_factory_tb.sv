@@ -6,8 +6,8 @@ shortint delta_rows[2:0];
 shortint delta_cols[2:0];
 tetro_type_t next_type;
 
-tetrominoes_factory tetrominoes_factory_inst(
-    .clk(clk),.tetro_type(tetro_type),.delta_rows(delta_rows),.next_type(next_type)
+tetrominoes_factory_old tetrominoes_factory_inst(
+    .clk(clk),.tetro_type(tetro_type),.delta_rows(delta_rows),.delta_cols(delta_cols),.next_type(next_type)
 );
 
 initial begin
