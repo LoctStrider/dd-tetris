@@ -179,14 +179,10 @@ module top_VGA(
     logic [19:0][9:0] map_cleared;
     shortint clear_index;
     reg clear_enable;
-    logic clear_finished;
     map_clearer clearer(
-        .clk(clk),
         .i(clear_index),
         .map(map),
-        .enable(clear_enable),
-        .next_map(map_cleared),
-        .finished(clear_finished)
+        .next_map(map_cleared)
     );
 
     logic [19:0][9:0] map_settled;
@@ -249,9 +245,8 @@ module top_VGA(
                 active_center_col <= down_col;
             end
             else if (rotate) begin
-                if (!rotated_collision) begin
+                if (!rotated_collision)
                     active_type <= active_rotated_type;
-                end
             end
             else if (settle) begin
                 settle = 0;
@@ -265,12 +260,10 @@ module top_VGA(
             end
 
             if (clear_enable) begin
-                if (clear_index == 0) begin
+                if (clear_index == 0)
                     clear_enable <= 0;
-                    map <= map_cleared;
-                end
-                else
-                    clear_index <= clear_index - 1;
+                map <= map_cleared;
+                clear_index <= clear_index - 1;
             end
         end
         else if (start_game) begin

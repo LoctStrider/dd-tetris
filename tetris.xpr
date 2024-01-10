@@ -224,7 +224,6 @@
       <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/types.svh">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
           <Attr Name="IsVisible" Val="1"/>
@@ -232,7 +231,6 @@
       </File>
       <File Path="$PSRCDIR/top_core.sv">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
