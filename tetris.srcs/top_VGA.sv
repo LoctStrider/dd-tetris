@@ -60,9 +60,9 @@ module top_VGA(
         .next_type()
     );
 
-    reg [4:0] rand_data;
+    reg [7:0] rand_data;
     logic rand_reset;
-    fibonacci_lfsr_nbit #(.BITS(5)) lfsr(
+    fibonacci_lfsr_nbit lfsr(
         .clk(game_clk),
         .reset(rand_reset),
         .data(rand_data)
@@ -93,7 +93,7 @@ module top_VGA(
     );
 
     always @(speedup)
-        period = (speedup ? 20_000_000 : 100_000_000);
+        period = (speedup ? 15_000_000 : 80_000_000);
 
     logic rotated_collision;
     collision_detector rotated_detector(

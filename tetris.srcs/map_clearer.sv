@@ -10,6 +10,8 @@ module map_clearer(
             for (t = 19; t > 0; t -= 1)
                 if (t <= i)
                     next_map[t] = map[t - 1];
+                else
+                    next_map[t] = map[t];
             next_map[0] = '0;
         end
         else
