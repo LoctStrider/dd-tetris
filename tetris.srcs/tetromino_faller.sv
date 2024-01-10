@@ -3,12 +3,8 @@ module tetromino_faller (
     input shortint delta_rows[2:0], delta_cols[2:0],
     input shortint delta_center_row, delta_center_col,
     input [19:0][9:0] map,
-    output succeed,
     output shortint new_center_row, new_center_col
 );
-
-    assign new_center_row = center_row + delta_center_row;
-    assign new_center_col = center_col + delta_center_col;
 
     logic collision;
     collision_detector detector (
@@ -19,6 +15,7 @@ module tetromino_faller (
         .map(map),
         .collision(collision)
     );
-    assign succeed = !collision;
+    assign new_center_row = (collision ? center_row : center_row + delta_center_row);
+    assign new_center_col = (collision ? center_col : center_col + delta_center_col);
 
 endmodule

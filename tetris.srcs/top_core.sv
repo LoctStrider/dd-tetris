@@ -18,11 +18,6 @@ module top_core();
     reg gen_new_tetro, cleanup, settle;
     wire speedup = down;
 
-    reg new_active_exist;
-    tetro_type_t new_active_type, new_next_type;
-    shortint new_active_center_row, new_active_center_col;
-    reg [19:0][9:0] new_map;
-
     reg in_game;
     logic [31:0] period;
     logic game_clk;
@@ -33,7 +28,6 @@ module top_core();
     );
 
     tetrominoes_factory active_factory(
-        .clk(clk),
         .tetro_type(active_type),
         .delta_rows(active_rows),
         .delta_cols(active_cols),
@@ -43,7 +37,6 @@ module top_core();
     shortint rotated_rows[2:0], rotated_cols[2:0];
 
     tetrominoes_factory rotated_factory(
-        .clk(clk),
         .tetro_type(active_rotated_type),
         .delta_rows(rotated_rows),
         .delta_cols(rotated_cols),
@@ -51,7 +44,6 @@ module top_core();
     );
 
     tetrominoes_factory next_factory(
-        .clk(clk),
         .tetro_type(next_type),
         .delta_rows(next_rows),
         .delta_cols(next_cols),
@@ -134,21 +126,43 @@ module top_core();
         .new_center_col(placed_col)
     );
 
-    shortint delta_center_row, delta_center_col;
-    logic fall_succeed;
-    shortint fall_center_row, fall_center_col;
-    tetromino_faller faller(
-        .clk(clk),
+    shortint left_row, left_col;
+    tetromino_faller left_faller(
         .center_row(active_center_row),
         .center_col(active_center_col),
         .delta_rows(active_rows),
         .delta_cols(active_cols),
-        .delta_center_row(delta_center_row),
-        .delta_center_col(delta_center_col),
+        .delta_center_row(0),
+        .delta_center_col(-1),
         .map(map),
-        .succeed(fall_succeed),
-        .new_center_row(fall_center_row),
-        .new_center_col(fall_center_col)
+        .new_center_row(left_row),
+        .new_center_col(left_col)
+    );
+
+    shortint right_row, right_col;
+    tetromino_faller right_faller(
+        .center_row(active_center_row),
+        .center_col(active_center_col),
+        .delta_rows(active_rows),
+        .delta_cols(active_cols),
+        .delta_center_row(0),
+        .delta_center_col(1),
+        .map(map),
+        .new_center_row(right_row),
+        .new_center_col(right_col)
+    );
+
+    shortint down_row, down_col;
+    tetromino_faller down_faller(
+        .center_row(active_center_row),
+        .center_col(active_center_col),
+        .delta_rows(active_rows),
+        .delta_cols(active_cols),
+        .delta_center_row(1),
+        .delta_center_col(0),
+        .map(map),
+        .new_center_row(down_row),
+        .new_center_col(down_col)
     );
 
     logic [19:0][9:0] map_cleared;
@@ -181,15 +195,10 @@ module top_core();
         .posedge_sig(game_run)
     );
 
-    always @(posedge clk) begin
-        new_active_exist = active_exist;
-        new_active_center_row = active_center_row;
-        new_active_center_col = active_center_col;
-        new_active_type = active_type;
-        new_next_type = next_type;
-        new_map = map;
-
-        if (in_game && game_run) begin
+    always_ff @(posedge clk) begin
+        if (in_game) begin
+            if (game_run) begin
+rand_reset <= 0;
             if (!active_exist) begin
                 gen_new_tetro = 1;
             end
@@ -209,78 +218,59 @@ module top_core();
 
         if (gen_new_tetro) begin
             gen_new_tetro = 0;
-            new_active_exist = 1;
-            new_active_center_row = placed_row;
-            new_active_center_col = placed_col;
-            new_active_type = next_type;
-            new_next_type = rand_data;
+            active_exist <= 1;
+            active_center_row <= placed_row;
+            active_center_col <= placed_col;
+            active_type <= next_type;
+            next_type <= rand_data % 19;
         end
         else if (move_left) begin
-            delta_center_row = 0;
-            delta_center_col = -1;
-            if (fall_succeed) begin
-                new_active_center_row = fall_center_row;
-                new_active_center_col = fall_center_col;
-            end
+            active_center_row <= left_row;
+            active_center_col <= left_col;
         end
         else if (move_right) begin
-            delta_center_row = 0;
-            delta_center_col = 1;
-            if (fall_succeed) begin
-                new_active_center_row = fall_center_row;
-                new_active_center_col = fall_center_col;
-            end
+            active_center_row <= right_row;
+            active_center_col <= right_col;
         end
         else if (move_down) begin
             move_down = 0;
-            delta_center_row = 1;
-            delta_center_col = 0;
-            if (fall_succeed) begin
-                new_active_center_row = fall_center_row;
-                new_active_center_col = fall_center_col;
-            end
-        end
-        else if (start_game) begin
-            debug = 1;
-            in_game = 1;
-            new_map = 0;
-            new_active_exist = 0;
-            new_next_type = rand_data % 19;
+            active_center_row <= down_row;
+            active_center_col <= down_col;
         end
         else if (rotate) begin
             if (!rotated_collision) begin
-                new_active_type = active_rotated_type;
+                active_type <= active_rotated_type;
             end
         end
         else if (settle) begin
             settle = 0;
-            new_map = map_settled;
+            active_exist <= 0;
+            map <= map_settled;
         end
         else if (cleanup) begin
             cleanup = 0;
-            clear_index = 19;
-            clear_enable = 1;
+            clear_index <= 19;
+            clear_enable <= 1;
         end
 
         if (clear_enable) begin
             if (clear_index == 0) begin
-                clear_enable = 0;
-                new_map = map_cleared;
+                clear_enable <= 0;
+                map <= map_cleared;
             end
             else
-                clear_index = clear_index - 1;
+                clear_index <= clear_index - 1;
+        end
+    end
+        else if (start_game) begin
+            in_game = 1;
+            rand_reset <= 1;
+            map <= 0;
+            active_exist <= 0;
+            next_type <= rand_data % 19;
         end
     end
 
-    always @(negedge clk) begin
-        active_exist = new_active_exist;
-        active_center_row = new_active_center_row;
-        active_center_col = new_active_center_col;
-        active_type = new_active_type;
-        next_type = new_next_type;
-        map = new_map;
-    end
-    
     integer clk_i;
     initial begin
         in_game = 0;
@@ -310,5 +300,4 @@ module top_core();
             #10;
         end
     end
-
 endmodule
