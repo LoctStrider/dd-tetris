@@ -198,7 +198,7 @@ module top_core();
     always_ff @(posedge clk) begin
         if (in_game) begin
             if (game_run) begin
-rand_reset <= 0;
+                lfsr_reset <= 0;
             if (!active_exist) begin
                 gen_new_tetro = 1;
             end
@@ -264,7 +264,7 @@ rand_reset <= 0;
     end
         else if (start_game) begin
             in_game = 1;
-            rand_reset <= 1;
+            lfsr_reset <= 1;
             map <= 0;
             active_exist <= 0;
             next_type <= rand_data % 19;
