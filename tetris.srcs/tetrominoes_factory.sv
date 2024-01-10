@@ -1,7 +1,6 @@
 `include "types.svh"
 
 module tetrominoes_factory(
-    input clk,
     input tetro_type_t tetro_type,
     output shortint delta_rows[2:0],
     output shortint delta_cols[2:0],
@@ -14,7 +13,7 @@ module tetrominoes_factory(
 //12-15: T
 //16-17: l
 //18: square
-    always @(posedge clk) begin
+    always_comb begin
         case(tetro_type)
             0 :begin delta_rows[0]=-1;delta_rows[1]=1;delta_rows[2]=1;delta_cols[0]=0;delta_cols[1]=-1;delta_cols[2]=0;next_type=3;   end
             1 :begin delta_rows[0]=0;delta_rows[1]=0;delta_rows[2]=1;delta_cols[0]=-1;delta_cols[1]=1;delta_cols[2]=1;next_type=0;    end
@@ -34,8 +33,7 @@ module tetrominoes_factory(
             15:begin delta_rows[0]=-1;delta_rows[1]=0;delta_rows[2]=1;delta_cols[0]=0;delta_cols[1]=-1;delta_cols[2]=0;next_type=14;  end
             16:begin delta_rows[0]=0;delta_rows[1]=0;delta_rows[2]=0;delta_cols[0]=-1;delta_cols[1]=1;delta_cols[2]=2;next_type=17;   end
             17:begin delta_rows[0]=-1;delta_rows[1]=1;delta_rows[2]=2;delta_cols[0]=0;delta_cols[1]=0;delta_cols[2]=0;next_type=16;   end
-            18:begin delta_rows[0]=-1;delta_rows[1]=-1;delta_rows[2]=0;delta_cols[0]=-1;delta_cols[1]=0;delta_cols[2]=-1;next_type=18;end
-            default:begin    end
+            default:begin delta_rows[0]=-1;delta_rows[1]=-1;delta_rows[2]=0;delta_cols[0]=-1;delta_cols[1]=0;delta_cols[2]=-1;next_type=18;end
         endcase
         
         
